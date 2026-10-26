@@ -3,6 +3,7 @@
 #include "ql.h"
 #include "hostfs.h"
 #include "terminal.h"
+#include "modem.h"
 #include "debugger.h"
 #include "rom_symbols.h"
 #include "m68k.h"
@@ -390,7 +391,7 @@ static void raw_write8(unsigned a, unsigned v) {
         ql.run_done = v;
         break;
     case 0x18100:
-        if (!terminal_command(v, ql.host_request))
+        if (!modem_command(v, ql.host_request) && !terminal_command(v, ql.host_request))
             hostfs_command(v, ql.host_request);
         break;
     case 0x18003:

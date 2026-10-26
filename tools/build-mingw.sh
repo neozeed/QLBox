@@ -9,15 +9,15 @@ for arch in x86_64 i686; do
     sdk="$SDL2_ROOT/$triple"
     mkdir -p "$dest"
     "$triple-gcc" -O2 -Isrc -Ivendor/musashi -I"$sdk/include/SDL2" \
-        -DQLBOX_SDL src/debugger.c src/main.c src/sdl_input.c src/mouse.c src/qsound.c src/beeper.c src/terminal.c src/hostfs.c src/imagefs.c src/ql.c \
+        -DQLBOX_SDL src/modem.c src/debugger.c src/main.c src/sdl_input.c src/mouse.c src/qsound.c src/beeper.c src/terminal.c src/hostfs.c src/imagefs.c src/ql.c \
         vendor/musashi/m68kcpu.c vendor/musashi/m68kops.c \
         vendor/musashi/softfloat/softfloat.c \
-        -o "$dest/qlbox.exe" -L"$sdk/lib" -lSDL2 -static-libgcc -lws2_32 -lm
+        -o "$dest/qlbox.exe" -L"$sdk/lib" -lSDL2 -static-libgcc -lws2_32 -lm -mconsole
     "$triple-gcc" -O2 -Isrc -Ivendor/musashi \
-        src/debugger.c src/main.c src/mouse.c src/qsound.c src/beeper.c src/terminal.c src/hostfs.c src/imagefs.c src/ql.c \
+        src/modem.c src/debugger.c src/main.c src/mouse.c src/qsound.c src/beeper.c src/terminal.c src/hostfs.c src/imagefs.c src/ql.c \
         vendor/musashi/m68kcpu.c vendor/musashi/m68kops.c \
         vendor/musashi/softfloat/softfloat.c \
-        -o "$dest/qlrun.exe" -static-libgcc -lws2_32 -lm
+        -o "$dest/qlrun.exe" -static-libgcc -lws2_32 -lm -mconsole
     "$triple-gcc" -O2 -Isrc tools/qlimage.c src/imagefs.c -o "$dest/qlimage.exe" -static-libgcc
     cp "$sdk/bin/SDL2.dll" "$dest/"
 done

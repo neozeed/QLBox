@@ -5,13 +5,12 @@ UK-keyboard JS ROM. It combines an SDL desktop emulator with a command-line
 QDOS program runner, writable host-directory drives, read-only disk and
 microdrive images, sound, mouse input and debugging tools.
 
-This is **R20, documented source edition**. Runtime behavior and bundled ROM bytes
-are unchanged from R20. For contributors, start with [the source guide](docs/SOURCE_GUIDE.md),
-[function reference](docs/FUNCTIONS.md) and [provenance](docs/PROVENANCE.md).
-
-This is **R20**. The new addition is the QDOS ZIP utility in `ROM1_`.
-See [RELEASE_NOTES.md](RELEASE_NOTES.md) for changes by release and
-[docs/VALIDATION.md](docs/VALIDATION.md) for validation details.
+This is **R21**, adding an outgoing Hayes-style TCP modem on `SER2` (selectable).
+The readable source and contributor guides from R20 are retained. Start with
+[the source guide](docs/SOURCE_GUIDE.md), [function reference](docs/FUNCTIONS.md)
+and [provenance](docs/PROVENANCE.md). Changes are in
+[RELEASE_NOTES.md](RELEASE_NOTES.md); test evidence is in
+[docs/VALIDATION.md](docs/VALIDATION.md).
 
 ## Start here
 
@@ -52,6 +51,7 @@ The supplied guest software in your own mounts is not included automatically.
 | Utilities | Embedded ROM1_ drive with ZIP, UNZIP, Toolkit II loader/binary, EXIT and README |
 | Terminal | qlrun launches one QDOS executable with a command tail and host stdin/stdout |
 | Sound | IPC beeper plus QSound AY tones/noise/envelopes; optional QSound ROM at boot |
+| Serial modem | Hayes AT commands on SER1/SER2, outgoing hostname/IP TCP dialing, Telnet or raw mode |
 | Mouse | QIMSI-compatible PS/2 packets; capture enabled only while the guest polls the interface |
 | Timing | Fast default, optional 68008 bus-cost model, optional onboard-RAM contention |
 | Debugging | Local GDB remote connection, registers/memory, stepping and execution breakpoints, guest logs, screen/RAM dumps |
@@ -239,6 +239,39 @@ The first click captures; the next click reaches the game. See [MOUSE.md](docs/M
 
 In BASIC, `SHUTDOWN` exits cleanly. `EXEC_W ROM1_EXIT` provides an executable
 exit stub. Ordinary BASIC `EXIT loopname` retains its normal language meaning.
+
+## Dial a BBS through a serial terminal
+
+```bat
+bin\win64\qlbox.exe --ram 640 --mount qlterm --modem ser2
+```
+
+Start your terminal (`EXEC_W WIN1_QLTERM` for the supplied QLTerm build),
+select `SER2I`, keep terminal local echo off, then type:
+
+```text
+AT
+ATDT vert.synchro.net
+ATDT test.whatever:2323
+```
+
+`AT` returns `OK`. Dialing uses port 23 unless a port is supplied; success
+returns `CONNECT` and subsequent bytes travel to the server. These hostnames
+are usage examples; release validation used local test servers only.
+
+The supplied QLTerm 3.00b2 defaults to its own native TCP/Telnet interface.
+Use F3, I (Interface), Enter to keep Echo Off, then select SER2I with the arrow
+keys, Enter, and Enter again to retain baud. Use its serial interface here:
+QLBox handles the TCP/Telnet connection beneath the modem.
+
+Wait one second, type `+++` without Enter, then wait one second to enter
+online command mode. `ATH` hangs up; `ATO` returns to the connection.
+`--modem-mode raw` selects binary raw TCP. The default Telnet mode handles
+IAC negotiation, ANSI terminal type, 80x24 size and NVT carriage returns.
+`--modem off` disables this bridge. No connection is made until a guest dials.
+QIMSI mouse support does not occupy either serial port.
+
+See [MODEM.md](docs/MODEM.md) for installation, commands, testing and scope.
 
 ## Sound and QSound firmware
 

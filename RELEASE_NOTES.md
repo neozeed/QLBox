@@ -1,5 +1,18 @@
 # QLBox release notes
 
+## R21 — outgoing Hayes TCP modem
+
+- Added selectable SER1/SER2 modem (SER2 by default) through the existing
+  QDOS channel bridge; the JS ROM binary is unchanged.
+- ATDT accepts hostnames, IPv4 and bracketed IPv6, with optional port; default 23.
+- Async DNS, nonblocking TCP, bounded queues, command/data modes, escape guard,
+  Telnet option handling and raw binary transport.
+- Added loopback transport tests, QDOS bridge tests and a real guest binary
+  round trip; verified the supplied unmodified QLTerm 3.00b2 through its UI.
+- Integrated the MSYS2 console-link fix and rebuilt Linux/Win32/Win64 binaries.
+- No public BBS runtime, physical UART timing or Windows runtime validation is
+  claimed. See docs/MODEM.md and docs/VALIDATION.md.
+
 ## R20 documented source edition
 
 - Expanded runtime C formatting without changing identifiers or executable tokens.

@@ -2,6 +2,7 @@
 #include "ql.h"
 #include "hostfs.h"
 #include "terminal.h"
+#include "modem.h"
 #include "debugger.h"
 #include <signal.h>
 #include <ctype.h>
@@ -31,7 +32,7 @@
 static void speed_title(SDL_Window *window) {
     char title[128];
     snprintf(title, sizeof(title),
-             "QLBox R20 - %ux CPU | Ctrl+F11 slower, Ctrl+F12 faster, Ctrl+F9 %s mouse", ql.speed,
+             "QLBox R21 - %ux CPU | Ctrl+F11 slower, Ctrl+F12 faster, Ctrl+F9 %s mouse", ql.speed,
              ql_sdl_mouse_captured()                ? "release"
              : ql_mouse_active(&ql.mouse, ql.frame) ? "capture"
                                                     : "inactive");
@@ -106,6 +107,10 @@ static int config_args(int *argc, char ***argv) {
                 option = "--ram";
             else if (!strcmp(key, "speed"))
                 option = "--speed";
+            else if (!strcmp(key, "modem"))
+                option = "--modem";
+            else if (!strcmp(key, "modem_mode"))
+                option = "--modem-mode";
             else if (!strcmp(key, "timing"))
                 option = "--timing";
             else if (!strcmp(key, "mouse_speed"))
@@ -264,7 +269,7 @@ static const char *default_rom(const char *argv0, char *out, size_t cap) {
  * Print the command-line interface and exit conventions implemented by this build.
  */
 static void usage(void) {
-    puts("QLBox R20 - Musashi Sinclair QL\n"
+    puts("QLBox R21 - Musashi Sinclair QL\n"
          "  --rom FILE       64 KiB QLBox ROM (default rom/js-rom.bin)\n"
          "  --mount PATH     directory or QL image as WIN1_/HOST1_/FLP1_/MDV1_\n"
          "  --ram KIB        RAM size, 128..640 in steps of 64 (default 128)\n"
@@ -288,6 +293,8 @@ static void usage(void) {
          "  --ram-dump FILE  save complete 1 MiB address-space backing array\n"
          "  --mouse-speed N relative mouse gain 1..8; capture requires guest polling\n"
          "  --no-mouse       disable QIMSI mouse; Ctrl+F9 captures/releases\n"
+         "  --modem PORT    Hayes modem on ser1, ser2 (default), or off\n"
+         "  --modem-mode MODE  telnet (default) or raw TCP; ATDT host[:port]\n"
          "  --qsound-rom FILE  map QSound firmware at 0xC0000 before boot\n"
          "  --no-qsound      disable the QSound AY interface (enabled by default)\n"
          "  --mute           disable host audio output (guest sound chips still run)\n"
@@ -312,7 +319,8 @@ int main(int argc, char **argv) {
     const char *debug_log = NULL;
     const char *qsound_rom = NULL;
     const char *rom = NULL, *dump = NULL, *ramdump = NULL, *type = NULL;
-    unsigned timing = 0;
+    unsigned timing = 0, modem_port = 2;
+    int modem_telnet = 1;
     unsigned speed = 1, frames = 0, ram = 128, boot = 0, type_at = 500, typed = 0, next_type = 0;
     int mute = 0, headless = 0, trace = 0, i, done = 0, result = 0;
     FILE *input = NULL;
@@ -430,7 +438,18 @@ int main(int argc, char **argv) {
             ramdump = argv[++i];
         else if (!strcmp(a, "--type"))
             type = argv[++i];
-        else if (!strcmp(a, "--timing")) {
+        else if (!strcmp(a, "--modem")) {
+            const char *port = argv[++i];
+            if (!strcmp(port, "off")) modem_port = 0;
+            else if (!strcmp(port, "ser1")) modem_port = 1;
+            else if (!strcmp(port, "ser2")) modem_port = 2;
+            else { fprintf(stderr, "--modem expects off, ser1, or ser2\n"); return 2; }
+        } else if (!strcmp(a, "--modem-mode")) {
+            const char *mode = argv[++i];
+            if (!strcmp(mode, "raw")) modem_telnet = 0;
+            else if (!strcmp(mode, "telnet")) modem_telnet = 1;
+            else { fprintf(stderr, "--modem-mode expects raw or telnet\n"); return 2; }
+        } else if (!strcmp(a, "--timing")) {
             const char *mode = argv[++i];
             if (!strcmp(mode, "fast"))
                 timing = 0;
@@ -580,6 +599,10 @@ int main(int argc, char **argv) {
         return 2;
     }
     terminal_init();
+    if (!modem_init(modem_port, modem_telnet)) {
+        fprintf(stderr, "Cannot initialize modem networking\n");
+        hostfs_shutdown(); debugger_close(); return 2;
+    }
     if (run) {
         ql.run_enabled = 1;
         strcpy(ql.run_name, run_name);
@@ -595,7 +618,7 @@ int main(int argc, char **argv) {
             goto sdl_fail;
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
         SDL_StartTextInput();
-        window = SDL_CreateWindow("QLBox R20 - Sinclair QL", SDL_WINDOWPOS_CENTERED,
+        window = SDL_CreateWindow("QLBox R21 - Sinclair QL", SDL_WINDOWPOS_CENTERED,
                                   SDL_WINDOWPOS_CENTERED, 1024, 512,
                                   SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
         if (!window)
@@ -677,6 +700,7 @@ int main(int argc, char **argv) {
                 next_type = ql.frame + ((c == '\n') ? 40 : 4);
             }
         }
+        modem_poll();
         ql_frame();
         if (ql.exit_requested)
             break;
@@ -756,6 +780,7 @@ int main(int argc, char **argv) {
         SDL_DestroyWindow(window);
     SDL_Quit();
 #endif
+    modem_shutdown();
     hostfs_shutdown();
     return result;
 #ifdef QLBOX_SDL
@@ -772,6 +797,7 @@ sdl_fail:
     if (window)
         SDL_DestroyWindow(window);
     SDL_Quit();
+    modem_shutdown();
     hostfs_shutdown();
     return 1;
 #endif
