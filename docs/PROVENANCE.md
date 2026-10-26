@@ -44,3 +44,24 @@ No license or ownership has been reassigned by this documentation pass.
 component retains its own notices. Where the supplied material does not
 establish an author or grant, this edition does not invent one. The guide
 adds no blanket license to Sinclair ROMs, utility binaries or sample code.
+
+## R21 modem references
+
+The modem is new QLBox bridge/transport code. The supplied QLTerm source was
+read to identify its QDOS serial calls, port suffixes, initialization and
+hangup sequences. QLTerm 3.00b2, copyright Jan Bredenbeek and contributors,
+was exercised unchanged; its code is not copied into the modem. QLTerm is
+not redistributed in this package. Its source identifies GPL-3.0-or-later.
+
+Protocol references: RFC 854 (Telnet), RFC 856 (binary transmission), RFC 1091
+(terminal type) and RFC 1073 (window size). MODEM.md links these and identifies
+the intentionally limited Hayes command subset rather than claiming complete
+compatibility with a particular physical modem model.
+
+## Minerva ROM option (R23)
+
+Minerva 1.98 by Laurence Reeves is bundled as a separate GPL-2.0-or-later
+ROM option. The user-supplied GAS rebuild and original assembly are retained
+in rom/minerva-gas-r1. R23 adds source-built host bridge adaptations derived
+from QLBox’s existing JS integration. See [MINERVA.md](MINERVA.md) for the
+source map, upstream notice, exact build checks and compatibility scope.

@@ -189,3 +189,40 @@ are separate; see SOURCE_GUIDE.md and PROVENANCE.md.
 - **`writefile`** — Write one complete binary payload/header and check both data writes and close; return false on failure.
 - **`main`** — List a validated image or extract it into a new destination with QDOS sidecar headers. Refuse an existing destination and report extraction failures.
 
+
+## src/modem.c (R21)
+
+- **`milliseconds`** — Read the monotonic host clock in milliseconds for dial and escape timing.
+- **`push`** — Append one byte to a bounded ring; return false when it is full.
+- **`pop`** — Remove one byte from a ring, or return -1 when empty.
+- **`text`** — Enqueue modem response text into the guest receive queue.
+- **`result`** — Emit a Hayes result using the current quiet/numeric/text settings.
+- **`lock_lookup`** — Acquire the platform lock protecting a resolver task result.
+- **`unlock_lookup`** — Release the resolver task lock.
+- **`resolve_host`** — Resolve the immutable destination on a worker and publish addresses/error under its lock.
+- **`free_lookup`** — Destroy the lock and free a completed resolver task after the worker has published completion.
+- **`hangup`** — Close TCP and release address candidates; cancel, but do not prematurely free, any DNS task.
+- **`would_block`** — Recognize platform socket errors that mean an operation may be retried later.
+- **`connected`** — Enter online data mode, reset Telnet state and report CONNECT.
+- **`next_address`** — Try resolved addresses with nonblocking sockets, retaining a pending connect or reporting NO CARRIER.
+- **`destination`** — Validate host[:port] or bracketed IPv6[:port] and default the service to TCP port 23.
+- **`dial`** — Start one asynchronous resolver task and the 30-second outgoing-dial timeout.
+- **`defaults`** — Restore E1/Q0/V1 and the one-second S12 escape guard.
+- **`parameter`** — Parse an optional decimal command parameter with a bounded accumulator.
+- **`execute`** — Interpret a completed AT command line, including settings, dialing and online control.
+- **`data_byte`** — Queue one network payload byte with Telnet IAC escaping and NVT carriage-return handling as required.
+- **`modem_put`** — Accept one guest serial byte, applying command parsing or guarded escape detection in data mode.
+- **`negotiate`** — Process Telnet WILL/WONT/DO/DONT with per-direction state and fixed 80x24 NAWS support.
+- **`received`** — Parse one Telnet byte, preserving partial commands/subnegotiations between socket reads.
+- **`modem_poll`** — Reap DNS, advance nonblocking TCP and escape timing, and transfer bounded queue data without waiting.
+- **`modem_get`** — Return one queued guest receive byte, or -1 when none is available.
+- **`modem_available`** — Report the current guest receive byte count.
+- **`modem_shutdown`** — Cancel any dial, close carrier and disable the bridge without blocking on DNS.
+- **`modem_init`** — Reset modem state and select a serial port/transport, preserving a pending cancelled resolver safely.
+- **`get32`** — Decode a big-endian guest register without host-endian or alignment assumptions.
+- **`put32`** — Store a register result in big-endian guest byte order.
+- **`ram`** — Check that a complete byte range lies inside configured guest RAM.
+- **`readable`** — Accept a complete source range in ROM or RAM, excluding unmapped/device regions.
+- **`serial_name`** — Recognize a counted name for the configured port with accepted serial suffix characters.
+- **`io`** — Dispatch serial QDOS I/O, retaining partial counts and pointers for OS retry semantics.
+- **`modem_command`** — Claim selected serial opens and tagged-handle operations in the existing six-register ROM bridge.

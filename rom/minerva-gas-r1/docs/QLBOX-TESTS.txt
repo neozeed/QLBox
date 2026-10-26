@@ -1,0 +1,13 @@
+PASS: Minerva F1, 128 KiB; arithmetic, loop, IPC typing, guest RAM marker.
+PASS: Minerva F2, 128 KiB; arithmetic, loop, IPC typing, guest RAM marker.
+PASS: Minerva F1, 640 KiB; arithmetic, loop, IPC typing, guest RAM marker.
+PASS: Minerva F2, 640 KiB; arithmetic, loop, IPC typing, guest RAM marker.
+PASS: ROM loader rejects invalid/unsupported images.
+startup: [qlbox] frame=3500 pc=000aae sr=2004 ramtop=040000 video=00 keys=0 irq_acks=3492
+f1-128k: [qlbox] frame=3500 pc=0034c0 sr=2004 ramtop=040000 video=00 keys=114 irq_acks=3492
+f2-128k: [qlbox] frame=3500 pc=002d8e sr=2700 ramtop=040000 video=00 keys=114 irq_acks=3492
+f2-640k: [qlbox] frame=3500 pc=002d8e sr=2700 ramtop=0c0000 video=00 keys=114 irq_acks=3460
+mode-4: [qlbox] frame=3500 pc=000e7a sr=2004 ramtop=040000 video=00 keys=57 irq_acks=3492
+mode-8: [qlbox] frame=3500 pc=000950 sr=2004 ramtop=040000 video=08 keys=57 irq_acks=3492
+PASS: startup; F1/F2; 128/640 KiB RAM; IPC input; BASIC arithmetic/loop; MODE 4/8.
+PASS: Linux SDL build with dummy video/audio drivers; typed BASIC wrote 42 to guest RAM.

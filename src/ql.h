@@ -12,6 +12,7 @@ typedef struct {
     /* Guest address-space backing bytes; all multibyte access is explicitly big-endian. */
     uint8_t mem[QL_MEM_SIZE];
     unsigned keyboard_table, boot_wait, basic_ready;
+    unsigned minerva198; /* Recognized stock or QLBox-adapted Minerva 1.98 profile. */
     /* Timing 0=legacy, 1=68008 bus, 2=bus + ZX8301 RAM contention. */
     unsigned timing, timing_active;
     uint64_t timing_clock, timing_cursor, timing_bus_extra, timing_ram_wait;

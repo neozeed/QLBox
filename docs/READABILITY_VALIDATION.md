@@ -1,3 +1,6 @@
+> Historical R20 report. R21 adds modem code and build integration; its source
+> is not token-identical to R20. See VALIDATION.md for current results.
+
 # R20 documented-source validation
 
 This edition preserves the R20 runtime implementation. It adds source

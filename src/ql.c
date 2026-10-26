@@ -6,6 +6,7 @@
 #include "modem.h"
 #include "debugger.h"
 #include "rom_symbols.h"
+#include "minerva_profile.h"
 #include "m68k.h"
 #include <stdio.h>
 #include <string.h>
@@ -277,7 +278,7 @@ static unsigned raw_read8(unsigned a) {
     if (a == 0x18020) {
         if (ql.ipc_reads)
             return (--ql.ipc_reads) ? 0 : ql.ipc_latch;
-        return 0; /* no serial receive data / no microdrive media */
+        return ql.minerva198 ? 8 : 0; /* Minerva empty-drive gap; no receive data. */
     }
     if (a == 0x18021)
         return ql.irq;
@@ -446,6 +447,15 @@ void m68k_write_memory_32(unsigned a, unsigned v) {
  * replace instruction execution or patch guest registers.
  */
 static void hook(unsigned pc) {
+    if (ql.minerva198) {
+        /* Symbols from the byte-exact Minerva 1.98 source build. */
+        if (pc == 0x8324 && !ql.boot_wait) {
+            ql.boot_wait = 1;
+            ql.keys[ql.key_in++ & 255] = ql.boot_mode == 0xe8 ? 0x39 : 0x3b;
+        }
+        if (pc == 0x84ae) ql.basic_ready = 1;
+        return;
+    }
     if (pc == QL_PC_BOOT_WAIT)
         ql.boot_wait = 1; /* GETMOD, bundled JS symbol map */
     if (pc == QL_PC_BASIC_READY)
@@ -459,7 +469,7 @@ static void hook(unsigned pc) {
 /**
  * ql_init
  *
- * Reset the machine, validate RAM and the supplied 64 KiB ROM, find its keyboard table and reset
+ * Reset the machine, validate RAM and the supplied 32..64 KiB ROM, find its keyboard table and reset
  * the Musashi CPU. Return false on unsupported configuration or ROM input.
  */
 int ql_init(const char *rom, unsigned ram_kb, int trace) {
@@ -484,13 +494,20 @@ int ql_init(const char *rom, unsigned ram_kb, int trace) {
         return 0;
     }
     n = fread(ql.mem, 1, 0x10000, f);
-    if (n != 0x10000 || fgetc(f) != EOF) {
-        fprintf(stderr, "Expected the 65536-byte QLBox ROM\n");
+    if (n < 0x8000 || n > 0x10000 || ferror(f) || fgetc(f) != EOF) {
+        fprintf(stderr, "Expected a 32768..65536-byte QL ROM\n");
         fclose(f);
         return 0;
     }
     fclose(f);
     ql.rom_size = (unsigned)n;
+    if (n == 48822 || n == 65536) {
+        unsigned a;
+        uint32_t hash = 2166136261u;
+        for (a = 0; a < n; a++) hash = (hash ^ ql.mem[a]) * 16777619u;
+        ql.minerva198 = (n == 48822 && hash == 0xd969ca59u) ||
+                        (n == 65536 && hash == QL_MINERVA_HOST_HASH);
+    }
     {
         static const unsigned char signature[] = {0, 12, 0, 138, 0, 75, 0, 201, 1, 8, 1, 18, 3, 63};
         unsigned a;
@@ -499,8 +516,8 @@ int ql_init(const char *rom, unsigned ram_kb, int trace) {
                 ql.keyboard_table = a;
                 break;
             }
-        if (!ql.keyboard_table) {
-            fprintf(stderr, "Unsupported ROM keyboard table\n");
+        if (!ql.keyboard_table && !ql.minerva198) {
+            fprintf(stderr, "Unsupported ROM keyboard table/profile\n");
             return 0;
         }
     }
@@ -552,6 +569,7 @@ void ql_frame(void) {
   * Commands become audible within one 400 us slice, including very short beeps. */
     unsigned slice, offset = 0;
     ql.irq |= 8;
+    if (ql.minerva198 && (ql.irq & 0x20)) ql.irq |= 1; /* Empty drive gap while enabled. */
     irq_update();
     for (slice = 0; slice < 50; slice++) {
         unsigned end = (slice + 1) * QL_AUDIO_FRAME / 50;
@@ -615,6 +633,29 @@ int ql_map_char(unsigned char c) {
     unsigned map, code, base = ql.keyboard_table;
     if (c == '\r')
         c = '\n';
+    if (ql.minerva198) {
+        for (map = 0; map < 2; map++) {
+            for (code = 3; code < 64; code++) {
+                unsigned v = ql.mem[0xb1a5 + code];
+                if (v == 0xfc) v = ' ';
+                else if (v == 0xfd) v = '\t';
+                else if (v == 0xfe) v = '\n';
+                else if (v == 0x80) v = 27;
+                else if (v >= 128) continue;
+                else if (map) {
+                    const char *lo = "',-./0123456789;=`";
+                    const char *hi = "\"<_>?)!@#$%^&*(:+~";
+                    const char *p;
+                    if ((v >= 'a' && v <= 'z') || v == '[' || v == ']') v ^= 32;
+                    else if ((p = strchr(lo, (int)v)) != NULL) v = (unsigned char)hi[p-lo];
+                    else continue;
+                }
+                if (v == c) return (int)(code | (map ? 0x400 : 0));
+            }
+        }
+        return -1;
+    }
+    if (!base) return -1;
     /* Invert this ROM's translation tables: the supplied JS has a localized
   * layout, so a hardcoded UK scan-code map is incorrect. QDOS still does
   * the conversion, through the real IPC path. Prefer unmodified keys. */

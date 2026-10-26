@@ -32,7 +32,7 @@
 static void speed_title(SDL_Window *window) {
     char title[128];
     snprintf(title, sizeof(title),
-             "QLBox R22 - %ux CPU | Ctrl+F11 slower, Ctrl+F12 faster, Ctrl+F9 %s mouse", ql.speed,
+             "QLBox R23 - %ux CPU | Ctrl+F11 slower, Ctrl+F12 faster, Ctrl+F9 %s mouse", ql.speed,
              ql_sdl_mouse_captured()                ? "release"
              : ql_mouse_active(&ql.mouse, ql.frame) ? "capture"
                                                     : "inactive");
@@ -219,7 +219,7 @@ static void interrupt_run(int sig) {
  * Probe supported working-directory and executable-relative locations for the bundled ROM,
  * writing candidate paths into the caller buffer.
  */
-static const char *default_rom(const char *argv0, char *out, size_t cap) {
+static const char *default_rom(const char *argv0, const char *name, char *out, size_t cap) {
     char exe[4096];
     char *p;
     size_t n;
@@ -251,17 +251,18 @@ static const char *default_rom(const char *argv0, char *out, size_t cap) {
     if (p) {
         *p = 0;
         for (depth = 0; depth < 3; depth++) {
-            int len = snprintf(out, cap, "%s/%srom/js-rom.bin", exe,
+            int len = snprintf(out, cap, "%s/%srom/%s", exe,
                                depth == 0   ? ""
                                : depth == 1 ? "../"
-                                            : "../../");
+                                            : "../../", name);
             if (len >= 0 && (size_t)len < cap && (f = fopen(out, "rb"))) {
                 fclose(f);
                 return out;
             }
         }
     }
-    return "rom/js-rom.bin";
+    snprintf(out, cap, "rom/%s", name);
+    return out;
 }
 /**
  * usage
@@ -269,8 +270,8 @@ static const char *default_rom(const char *argv0, char *out, size_t cap) {
  * Print the command-line interface and exit conventions implemented by this build.
  */
 static void usage(void) {
-    puts("QLBox R22 - Musashi Sinclair QL\n"
-         "  --rom FILE       64 KiB QLBox ROM (default rom/js-rom.bin)\n"
+    puts("QLBox R23 - Musashi Sinclair QL\n"
+         "  --rom FILE       ROM file or js|minerva (default js)\n"
          "  --mount PATH     directory or QL image as WIN1_/HOST1_/FLP1_/MDV1_\n"
          "  --ram KIB        RAM size, 128..640 in steps of 64 (default 128)\n"
          "  --timing MODE   fast (default), 68008 bus, or ql bus+RAM contention\n"
@@ -491,8 +492,8 @@ int main(int argc, char **argv) {
         }
     }
     (void)mute; /* no audio device in the standalone CLI build */
-    if (!rom)
-        rom = default_rom(argv[0], rom_path, sizeof(rom_path));
+    if (!rom || !strcmp(rom, "js") || !strcmp(rom, "minerva"))
+        rom = default_rom(argv[0], rom && !strcmp(rom, "minerva") ? "minerva-rom.bin" : "js-rom.bin", rom_path, sizeof(rom_path));
     if (!run && *args) {
         fprintf(stderr, "Command arguments require --run\n");
         return 2;
@@ -618,7 +619,7 @@ int main(int argc, char **argv) {
             goto sdl_fail;
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
         SDL_StartTextInput();
-        window = SDL_CreateWindow("QLBox R22 - Sinclair QL", SDL_WINDOWPOS_CENTERED,
+        window = SDL_CreateWindow("QLBox R23 - Sinclair QL", SDL_WINDOWPOS_CENTERED,
                                   SDL_WINDOWPOS_CENTERED, 1024, 512,
                                   SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
         if (!window)

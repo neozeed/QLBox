@@ -1,6 +1,7 @@
 # Reading QLBox
 
-This edition documents R20 without changing its executable logic. Begin with
+The R20 readability pass preserved executable logic. R21 adds the modem
+implementation described below; the earlier equivalence report applies to R20 only. Begin with
 `src/main.c`, `src/ql.h` and `src/ql.c`, then follow one device at a time.
 Every function in `src/*.c` and `tools/qlimage.c` has a purpose comment;
 [FUNCTIONS.md](FUNCTIONS.md) is the corresponding searchable index.
@@ -149,3 +150,28 @@ packages separate if comparing them. `tools/verify-readable.py BASELINE`
 checks C lexical tokens, function-comment coverage, assembly non-comment
 content and protected third-party/generated files against the original R20.
 See [READABILITY_VALIDATION.md](READABILITY_VALIDATION.md) for results.
+
+## R21 serial modem
+
+`src/modem.c` claims the selected SER1/SER2 device in the existing bridge
+before terminal/file dispatch. Its negative tagged handle keeps QDOS stream
+channel identity; no guest address interception or ROM byte patch is required.
+`main.c` polls it once per host loop, including while guest execution is paused.
+The serial I/O handler returns QDOS not-complete with partial register counts
+so the OS retains its asynchronous retry/scheduling behavior.
+
+The emulation thread owns modem parser, queues and socket. A detached worker
+performs only DNS and publishes its result under a mutex/critical section.
+Cancellation leaves a resolver task alive until safely reaped; only one can
+be outstanding. Network and escape timeouts use monotonic host time. Core
+queue capacity limits reads/writes, while the kernel socket buffers provide
+backpressure. See MODEM.md for exact protocol scope and FUNCTIONS.md for entry
+points. The QIMSI mouse remains separate from both serial ports.
+
+### R22 modem retry semantics
+
+`modem.c:io` treats D1 as cumulative progress and D2 as the original request
+length for block/line transfers. The existing ROM clears D1 for the initial
+call and retains it on scheduler retries; A1 is already advanced. Telnet
+option state 3 denotes an outstanding initial BINARY offer, state 1 denotes
+agreement. Only state 1 disables NVT carriage-return conversion.

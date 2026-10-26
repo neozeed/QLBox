@@ -1,0 +1,10 @@
+make: Entering directory '/workspace/scratch/a120c468c448/minerva-gas'
+CROSS="/workspace/scratch/a120c468c448/toolchain/root/usr/bin/m68k-linux-gnu-" python3 tools/build.py
+ROM: 48822 bytes
+python3 tools/verify.py
+PASS: all 48,822 bytes match the supplied Minerva 1.98 ROM.
+SHA-256: aafbd3b0b2bf60d2cdeb139a355d552908b041ab021a1ff1b0be5547d9bcf2a2
+python3 tools/check_assertions.py
+PASS: 443 original source assertion comparisons against the generated symbols.
+/workspace/scratch/a120c468c448/toolchain/root/usr/bin/m68k-linux-gnu-objdump -d build/minerva.elf > build/minerva.disassembly.txt
+make: Leaving directory '/workspace/scratch/a120c468c448/minerva-gas'

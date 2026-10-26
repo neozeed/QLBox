@@ -1,0 +1,9 @@
+ROM build: exact oracle match, no known byte differences.
+Assembler host tested: Linux x86-64; GNU binutils 2.42, m68k-linux-gnu ELF backend.
+Other modern m68k-elf binutils hosts: supported prefix, not separately executed.
+QLBox: Linux headless runtime proven. Windows PE32/PE32+ compile proven only.
+Minimal empty-drive gap model, not physical microdrive media emulation.
+Minerva-specific hooks are gated to the exact 1.98 fingerprint.
+JS-specific host filesystem, TCP modem and other guest drivers are not ported.
+Keyboard profile: UK ASCII typing; full compose/extended-character input untested.
+BEEP command issued in tests; audio fidelity not asserted.
