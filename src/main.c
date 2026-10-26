@@ -32,7 +32,7 @@
 static void speed_title(SDL_Window *window) {
     char title[128];
     snprintf(title, sizeof(title),
-             "QLBox R21 - %ux CPU | Ctrl+F11 slower, Ctrl+F12 faster, Ctrl+F9 %s mouse", ql.speed,
+             "QLBox R22 - %ux CPU | Ctrl+F11 slower, Ctrl+F12 faster, Ctrl+F9 %s mouse", ql.speed,
              ql_sdl_mouse_captured()                ? "release"
              : ql_mouse_active(&ql.mouse, ql.frame) ? "capture"
                                                     : "inactive");
@@ -269,7 +269,7 @@ static const char *default_rom(const char *argv0, char *out, size_t cap) {
  * Print the command-line interface and exit conventions implemented by this build.
  */
 static void usage(void) {
-    puts("QLBox R21 - Musashi Sinclair QL\n"
+    puts("QLBox R22 - Musashi Sinclair QL\n"
          "  --rom FILE       64 KiB QLBox ROM (default rom/js-rom.bin)\n"
          "  --mount PATH     directory or QL image as WIN1_/HOST1_/FLP1_/MDV1_\n"
          "  --ram KIB        RAM size, 128..640 in steps of 64 (default 128)\n"
@@ -618,7 +618,7 @@ int main(int argc, char **argv) {
             goto sdl_fail;
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
         SDL_StartTextInput();
-        window = SDL_CreateWindow("QLBox R21 - Sinclair QL", SDL_WINDOWPOS_CENTERED,
+        window = SDL_CreateWindow("QLBox R22 - Sinclair QL", SDL_WINDOWPOS_CENTERED,
                                   SDL_WINDOWPOS_CENTERED, 1024, 512,
                                   SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
         if (!window)

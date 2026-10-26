@@ -199,6 +199,17 @@ static void connected(void) {
     if (m.addresses)
         freeaddrinfo(m.addresses);
     m.addresses = m.next = NULL;
+    if (m.telnet) {
+        /* Request an eight-bit path in both directions. State 3 means our
+         * offer awaits a reply; it is not permission to use binary yet. */
+        m.local[0] = m.remote[0] = 3;
+        push(&m.tx, 255);
+        push(&m.tx, 251);
+        push(&m.tx, 0);
+        push(&m.tx, 255);
+        push(&m.tx, 253);
+        push(&m.tx, 0);
+    }
     result(1);
 }
 /* Try each resolved address without blocking; IPv4 and IPv6 share the path. */
@@ -470,7 +481,7 @@ static int data_byte(unsigned c) {
     push(&m.tx, c);
     if (m.telnet && c == 255)
         push(&m.tx, c);
-    if (m.telnet && !m.local[0] && c == 13)
+    if (m.telnet && m.local[0] != 1 && c == 13)
         m.tx_cr = 1;
     return 1;
 }
@@ -542,11 +553,20 @@ int modem_put(unsigned c) {
 static void negotiate(unsigned command, unsigned option) {
     unsigned response = 0;
     if (command == 251) { /* WILL */
+        if (m.remote[option] == 3) {
+            m.remote[option] = 1;
+            m.rx_cr = 0;
+            return;
+        }
         if (m.remote[option])
             return;
         response = option == 0 || option == 1 || option == 3 ? 253 : 254;
         m.remote[option] = response == 253 ? 1 : 2;
     } else if (command == 253) { /* DO */
+        if (m.local[option] == 3) {
+            m.local[option] = 1;
+            return;
+        }
         if (m.local[option])
             return;
         response = option == 0 || option == 3 || option == 24 || option == 31 ? 251 : 252;
@@ -579,7 +599,7 @@ static void received(unsigned c) {
         if (c == 255)
             m.tel_state = 1;
         else {
-            if (!m.remote[0] && m.rx_cr && c == 0) {
+            if (m.remote[0] != 1 && m.rx_cr && c == 0) {
                 m.rx_cr = 0;
                 break;
             }
@@ -819,7 +839,7 @@ static int serial_name(uint32_t a) {
  * Serial parity, baud and handshake suffixes are accepted but not paced. */
 /** io: Dispatch serial QDOS I/O, retaining partial counts and pointers for OS retry semantics. */
 static int io(uint32_t *r) {
-    unsigned op = r[0], n = r[2] & 65535, i = 0;
+    unsigned op = r[0], total = r[2] & 65535, done = r[1] & 65535, n, i = 0;
     int c;
     if (op == 0)
         return m.rx.count ? 0 : NC;
@@ -827,12 +847,22 @@ static int io(uint32_t *r) {
         return m.tx.count ? NC : 0;
     if (op == 5)
         return modem_put(r[1] & 255) ? 0 : NC;
+    /* QDOS clears D1 on entry, then retries with cumulative D1 and the
+     * advanced A1. D2 stays the ORIGINAL length (system_asm l034b6).
+     * Starting a fresh D2-byte request here overruns buffers and never
+     * completes fragmented transfers. */
+    if (op == 2 || op == 3 || op == 7) {
+        if (done > total)
+            return BP;
+        n = total - done;
+    } else
+        n = total;
     if (op == 7) {
         if (!readable(r[5], n))
             return BP;
         while (i < n && modem_put(ql.mem[r[5] + i]))
             i++;
-        r[1] = i;
+        r[1] = done + i;
         r[5] += i;
         return i == n ? 0 : NC;
     }
@@ -852,7 +882,7 @@ static int io(uint32_t *r) {
         if (op == 2 && c == 10)
             break;
     }
-    r[1] = i;
+    r[1] = done + i;
     r[5] += i;
     if (op == 2)
         return i && ql.mem[r[5] - 1] == 10 ? 0 : i == n ? -5 : NC;

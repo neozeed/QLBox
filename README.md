@@ -5,7 +5,11 @@ UK-keyboard JS ROM. It combines an SDL desktop emulator with a command-line
 QDOS program runner, writable host-directory drives, read-only disk and
 microdrive images, sound, mouse input and debugging tools.
 
-This is **R21**, adding an outgoing Hayes-style TCP modem on `SER2` (selectable).
+This is **R22**, fixing fragmented serial transfers and requesting Telnet BINARY mode for the outgoing Hayes TCP modem.
+
+For QLTerm 3.00b2 downloads to WIN1, set **F3 → B → 32 → Enter** first.
+This avoids its unbuffered final-block duplication. XMODEM and YMODEM downloads
+have been verified with exact binary file comparisons; see [modem notes](docs/MODEM.md).
 The readable source and contributor guides from R20 are retained. Start with
 [the source guide](docs/SOURCE_GUIDE.md), [function reference](docs/FUNCTIONS.md)
 and [provenance](docs/PROVENANCE.md). Changes are in

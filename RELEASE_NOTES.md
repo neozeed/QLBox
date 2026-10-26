@@ -1,5 +1,21 @@
 # QLBox release notes
 
+## R22 — serial block-transfer retry fix
+
+- Fixed QDOS block reads, line reads and string writes across scheduler retries:
+  D1 is cumulative, D2 remains the original length, and A1 already points past
+  completed bytes. R21 could overrun the requested receive range or time out.
+- Request Telnet BINARY in both directions on connect, waiting for agreement
+  before changing byte handling. Peers may still refuse and use NVT text mode.
+- Keep bounded TCP/QDOS backpressure and binary-transparent XON/XOFF bytes.
+  This is a QDOS bridge fix, not emulated RTS/CTS pins or an XON/XOFF mode.
+- Added fragmented guest block-read and partial string-write regressions,
+  plus passing real QLTerm X/YMODEM download tests with exact file comparison.
+  QLTerm 3b2 needs F3, B, 32, Enter for its own unbuffered-save issue; see
+  docs/MODEM.md.
+- ROM bytes are unchanged. Windows binaries are cross-built; native Windows
+  and macOS runtime testing remains outstanding.
+
 ## R21 — outgoing Hayes TCP modem
 
 - Added selectable SER1/SER2 modem (SER2 by default) through the existing
