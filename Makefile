@@ -1,5 +1,6 @@
 ifeq ($(OS),Windows_NT)
 SOCKET_LIBS = -lws2_32
+WINDOWS_CONSOLE_LDFLAGS = -mconsole
 endif
 CC ?= cc
 CFLAGS ?= -O2
@@ -7,10 +8,16 @@ CPPFLAGS += -Isrc -Ivendor/musashi
 CORE = src/debugger.c src/mouse.c src/qsound.c src/beeper.c src/terminal.c src/hostfs.c src/imagefs.c src/ql.c vendor/musashi/m68kcpu.c vendor/musashi/m68kops.c vendor/musashi/softfloat/softfloat.c
 SDL_CFLAGS ?= $(shell sdl2-config --cflags)
 SDL_LIBS ?= $(shell sdl2-config --libs)
+# MSYS2 SDL2 may supply -mwindows. QLBox uses a normal main() and needs
+# inherited stdin/stdout/stderr for --help, diagnostics and terminal use.
+# Keep -mconsole AFTER SDL_LIBS so the console subsystem wins.
+ifneq (,$(findstring mingw,$(shell $(CC) -dumpmachine)))
+WINDOWS_CONSOLE_LDFLAGS = -mconsole
+endif
 .PHONY: all headless clean test
 all: qlbox qlrun qlimage
 qlbox: src/sdl_input.c src/main.c src/builtin_files.h src/ql.h src/beeper.h src/hostfs.h src/terminal.h src/rom_symbols.h $(CORE)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(SDL_CFLAGS) -DQLBOX_SDL src/main.c src/sdl_input.c $(CORE) -o $@ $(SDL_LIBS) $(SOCKET_LIBS) -lm
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(SDL_CFLAGS) -DQLBOX_SDL src/main.c src/sdl_input.c $(CORE) -o $@ $(SDL_LIBS) $(SOCKET_LIBS) -lm $(WINDOWS_CONSOLE_LDFLAGS)
 headless: qlbox-headless qlrun qlimage
 qlbox-headless: src/main.c src/builtin_files.h src/ql.h src/beeper.h src/hostfs.h src/terminal.h src/rom_symbols.h $(CORE)
 	$(CC) $(CFLAGS) $(CPPFLAGS) src/main.c $(CORE) -o $@ $(SOCKET_LIBS) -lm
