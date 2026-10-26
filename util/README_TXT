@@ -1,0 +1,10 @@
+QLBox built-in read-only utility drive
+DIR ROM1_
+LRUN ROM1_TK2_BAS  - install Toolkit 2 in RAM (once per boot)
+EXEC_W ROM1_UNZIP  - UnZip 5.41 help
+After loading TK2, pass UnZip arguments with EXEC_W's command tail.
+Unzip destinations should be WIN1_ (your mounted host directory).
+Toolkit allocation is 17396 bytes; its supplied file is 16396 bytes.
+
+ZIP is available as ROM1_ZIP (use 640 KiB RAM).
+qlrun --ram 640 --mount elite --run ROM1_ZIP --args "WIN1_a WIN1_ELITEASM WIN1_README_MD"

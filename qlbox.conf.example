@@ -1,0 +1,22 @@
+# Copy to qlbox.conf in your working directory, or use --config FILE.
+# Paths are relative to the working directory. CLI settings take precedence.
+ram=640
+speed=1
+boot=f2
+mute=false
+mount1=host
+# mount2=C:\QL\games
+# mount3=C:\QL\work
+# Image files are accepted too (read-only); FLPn_ and MDVn_ alias WINn_.
+# mount2="C:\QL\QLWA.win"
+# QIMSI-compatible mouse (Ctrl+F9 captures/releases).
+mouse=true
+mouse_speed=2
+# QSound AY-3-8910 at $C2000, mixed with the IPC beeper.
+qsound=true
+
+# Optional QSound firmware (enables its BASIC commands at boot):
+# qsound_rom=rom/qsound-1.31.rom
+
+# CPU/bus timing: fast (default), 68008, ql (experimental contention)
+# timing=ql

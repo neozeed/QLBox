@@ -1,0 +1,7 @@
+10 REM QLBox single-tone beeper demonstration
+20 BEEP 14000,20: PAUSE 60
+30 BEEP 14000,30: PAUSE 60
+40 BEEP 14000,40: PAUSE 60
+50 BEEP 0,60: PAUSE 50
+60 BEEP
+70 PRINT "Beeper demo finished"

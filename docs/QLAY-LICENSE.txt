@@ -1,0 +1,25 @@
+
+
+Copyright (c) 1997,1998,1999 by Jan Venema
+e-mail: A.Jaw.Venema@net.hcc.nl
+
+This is copyrighted software, but freely distributable.
+
+Permission to use, copy, modify, distribute this software and its
+documentation for any purpose is hereby granted without fee, provided
+that the above copyright notice appear in all copies and that both that
+copyright notice and this permission notice appear in supporting
+documentation, and that the name of Jan Venema not be used in advertising
+or publicity pertaining to distribution of the software without specific,
+written prior permission.  Jan Venema makes no representations about the
+suitability of this software for any purpose. It is provided "as is"
+without express or implied warranty.
+
+Jan Venema disclaims all warranties with regard to this software,
+including all implied warranties of merchantability and fitness, in no
+event shall Jan Venema be liable for any special, indirect or
+consequential damages or any damages whatsoever resulting from loss of
+use, data or profits, whether in an action of contract, negligence or
+other tortious action, arising out of or in connection with the use or
+performance of this software.
+

@@ -1,0 +1,4 @@
+10 REMark Load Toolkit 2 v2.12 from the QLBox utility drive
+20 LET tk2adr=RESPR(17396)
+30 LBYTES "ROM1_TK2_BIN",tk2adr
+40 CALL tk2adr+1380

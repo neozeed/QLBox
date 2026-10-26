@@ -1,0 +1,379 @@
+
+|****************************
+|*
+|* charfount_asm
+|*
+|* called from d36 ff // DCE
+|*
+|****************************
+.balign 2, 0 ; l0ad9a:	.long 0x1f605428
+.equ xl0ad9a, l0ad9a
+.balign 2, 0 ; 	.long 0x54285428
+.balign 2, 0 ; 	.long 0x54285400
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x10101010
+.balign 2, 0 ; 	.long 0x10001000
+.balign 2, 0 ; 	.long 0x00282800
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; oadbe:	.long 0x00002828
+.balign 2, 0 ; 	.long 0x7c287c28
+.balign 2, 0 ; 	.long 0x28000038
+.balign 2, 0 ; 	.long 0x50503814
+.balign 2, 0 ; 	.long 0x14380000
+.balign 2, 0 ; 	.long 0x64640810
+.balign 2, 0 ; 	.long 0x204c4c00
+.balign 2, 0 ; 	.long 0x00205050
+.balign 2, 0 ; 	.long 0x20544834
+.balign 2, 0 ; 	.long 0x00001010
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x00000004
+.balign 2, 0 ; 	.long 0x08101010
+.balign 2, 0 ; 	.long 0x08040000
+.balign 2, 0 ; 	.long 0x40201010
+.balign 2, 0 ; 	.long 0x10204000
+.balign 2, 0 ; 	.long 0x00105438
+.balign 2, 0 ; 	.long 0x10385410
+.balign 2, 0 ; 	.long 0x00000010
+.balign 2, 0 ; 	.long 0x107c1010
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x18180810
+.balign 2, 0 ; 	.long 0x0000007c
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x00001818
+.balign 2, 0 ; 	.long 0x00000404
+.balign 2, 0 ; 	.long 0x08102040
+.balign 2, 0 ; 	.long 0x40000038
+.balign 2, 0 ; 	.long 0x444c5464
+.balign 2, 0 ; 	.long 0x44380000
+.balign 2, 0 ; 	.long 0x10301010
+.balign 2, 0 ; 	.long 0x10103800
+.balign 2, 0 ; 	.long 0x00384404
+.balign 2, 0 ; 	.long 0x0810207c
+.balign 2, 0 ; 	.long 0x00003844
+.balign 2, 0 ; 	.long 0x04180444
+.balign 2, 0 ; 	.word 0x3800
+.balign 2, 0 ; l0ae58:	.word 0x0008
+.balign 2, 0 ; 	.long 0x1828487c
+.balign 2, 0 ; 	.long 0x08080000
+.balign 2, 0 ; 	.long 0x7c407804
+.balign 2, 0 ; 	.long 0x04443800
+.balign 2, 0 ; 	.long 0x00182040
+.balign 2, 0 ; 	.long 0x78444438
+.balign 2, 0 ; 	.long 0x00007c04
+.balign 2, 0 ; 	.long 0x08102040
+.balign 2, 0 ; 	.long 0x40000038
+.balign 2, 0 ; 	.long 0x44443844
+.balign 2, 0 ; 	.long 0x44380000
+.balign 2, 0 ; 	.long 0x3844443c
+.balign 2, 0 ; 	.long 0x04083000
+.balign 2, 0 ; 	.long 0x00000018
+.balign 2, 0 ; 	.long 0x18001818
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; oae9a:	.long 0x18180018
+.balign 2, 0 ; 	.long 0x18081004
+.balign 2, 0 ; 	.long 0x08102010
+.balign 2, 0 ; 	.long 0x08040000
+.balign 2, 0 ; 	.long 0x00007c00
+.balign 2, 0 ; 	.long 0x7c000000
+.balign 2, 0 ; 	.long 0x00402010
+.balign 2, 0 ; 	.long 0x08102040
+.balign 2, 0 ; 	.long 0x00003844
+.balign 2, 0 ; 	.long 0x04081000
+.balign 2, 0 ; 	.long 0x10000038
+.balign 2, 0 ; 	.long 0x444c544c
+.balign 2, 0 ; 	.long 0x40300000
+.balign 2, 0 ; oaece:	.long 0x3844447c
+.balign 2, 0 ; 	.long 0x44444400
+.balign 2, 0 ; 	.long 0x00784444
+.balign 2, 0 ; 	.long 0x78444478
+.balign 2, 0 ; 	.long 0x00003844
+.balign 2, 0 ; 	.long 0x40404044
+.balign 2, 0 ; 	.long 0x38000078
+.balign 2, 0 ; 	.long 0x44444444
+.balign 2, 0 ; 	.long 0x44780000
+.balign 2, 0 ; 	.long 0x7c404078
+.balign 2, 0 ; 	.long 0x40407c00
+.balign 2, 0 ; oaefa:	.long 0x007c4040
+.balign 2, 0 ; 	.long 0x78404040
+.balign 2, 0 ; 	.long 0x00003844
+.balign 2, 0 ; 	.long 0x40404c44
+.balign 2, 0 ; 	.long 0x38000044
+.balign 2, 0 ; 	.long 0x44447c44
+.balign 2, 0 ; 	.long 0x44440000
+.balign 2, 0 ; 	.long 0x38101010
+.balign 2, 0 ; 	.long 0x10103800
+.balign 2, 0 ; 	.long 0x00040404
+.balign 2, 0 ; 	.long 0x04044438
+.balign 2, 0 ; 	.long 0x00004448
+.balign 2, 0 ; 	.long 0x50605048
+.balign 2, 0 ; 	.long 0x44000040
+.balign 2, 0 ; 	.long 0x40404040
+.balign 2, 0 ; 	.long 0x407c0000
+.balign 2, 0 ; 	.long 0x446c5444
+.balign 2, 0 ; 	.long 0x44444400
+.balign 2, 0 ; oaf42:	.long 0x00444464
+.balign 2, 0 ; 	.long 0x544c4444
+.balign 2, 0 ; 	.long 0x00003844
+.balign 2, 0 ; 	.long 0x44444444
+.balign 2, 0 ; 	.long 0x38000078
+.balign 2, 0 ; 	.long 0x44447840
+.balign 2, 0 ; 	.long 0x40400000
+.balign 2, 0 ; 	.long 0x38444444
+.balign 2, 0 ; 	.long 0x54483400
+.balign 2, 0 ; 	.long 0x00784444
+.balign 2, 0 ; 	.long 0x78504844
+.balign 2, 0 ; 	.long 0x00003844
+.balign 2, 0 ; 	.long 0x40380444
+.balign 2, 0 ; 	.long 0x3800007c
+.balign 2, 0 ; 	.long 0x10101010
+.balign 2, 0 ; 	.long 0x10100000
+.balign 2, 0 ; 	.long 0x44444444
+.balign 2, 0 ; oaf86:	.long 0x44443800
+.balign 2, 0 ; 	.long 0x00444444
+.balign 2, 0 ; 	.long 0x44442810
+.balign 2, 0 ; 	.long 0x00004444
+.balign 2, 0 ; 	.long 0x44445454
+.balign 2, 0 ; 	.long 0x28000044
+.balign 2, 0 ; 	.long 0x44281028
+.balign 2, 0 ; 	.long 0x44440000
+.balign 2, 0 ; 	.long 0x44442810
+.balign 2, 0 ; 	.long 0x10101000
+.balign 2, 0 ; 	.long 0x007c0408
+.balign 2, 0 ; 	.long 0x1020407c
+.balign 2, 0 ; 	.long 0x00001c10
+.balign 2, 0 ; 	.long 0x10101010
+.balign 2, 0 ; 	.long 0x1c000040
+.balign 2, 0 ; 	.long 0x40201008
+.balign 2, 0 ; oafc6:	.long 0x04040000
+.balign 2, 0 ; 	.long 0x70101010
+.balign 2, 0 ; 	.long 0x10107000
+.balign 2, 0 ; 	.long 0x00102844
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x007c0018
+.balign 2, 0 ; 	.long 0x24207020
+.balign 2, 0 ; 	.long 0x207c0000
+.balign 2, 0 ; 	.long 0x0000344c
+.balign 2, 0 ; 	.long 0x444c3400
+.balign 2, 0 ; 	.long 0x00404078
+.balign 2, 0 ; 	.long 0x44444478
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x3c404040
+.balign 2, 0 ; 	.long 0x3c000004
+.balign 2, 0 ; ob00a:	.long 0x043c4444
+.balign 2, 0 ; 	.long 0x443c0000
+.balign 2, 0 ; 	.long 0x00003844
+.balign 2, 0 ; 	.long 0x7c403c00
+.balign 2, 0 ; 	.long 0x00182420
+.balign 2, 0 ; 	.long 0x70202020
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x38444444
+.balign 2, 0 ; 	.long 0x3c043840
+.balign 2, 0 ; 	.long 0x40784444
+.balign 2, 0 ; 	.long 0x44440000
+.balign 2, 0 ; 	.long 0x10001010
+.balign 2, 0 ; 	.long 0x10100800
+.balign 2, 0 ; 	.long 0x00100010
+.balign 2, 0 ; 	.long 0x10101010
+.balign 2, 0 ; 	.long 0x10204040
+.balign 2, 0 ; 	.long 0x44487048
+.balign 2, 0 ; 	.long 0x44000010
+.balign 2, 0 ; ob052:	.long 0x10101010
+.balign 2, 0 ; 	.long 0x10080000
+.balign 2, 0 ; 	.long 0x00006854
+.balign 2, 0 ; 	.long 0x54545400
+.balign 2, 0 ; 	.long 0x00000078
+.balign 2, 0 ; 	.long 0x44444444
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x38444444
+.balign 2, 0 ; 	.long 0x38000000
+.balign 2, 0 ; 	.long 0x00784444
+.balign 2, 0 ; 	.long 0x44784040
+.balign 2, 0 ; 	.long 0x00003c44
+.balign 2, 0 ; 	.long 0x44443c04
+.balign 2, 0 ; 	.long 0x04000058
+.balign 2, 0 ; ob08a:	.long 0x64404040
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x38403804
+.balign 2, 0 ; 	.long 0x38000010
+.balign 2, 0 ; 	.long 0x10381010
+.balign 2, 0 ; 	.long 0x100c0000
+.balign 2, 0 ; 	.long 0x00004444
+.balign 2, 0 ; 	.long 0x44443c00
+.balign 2, 0 ; 	.long 0x00000044
+.balign 2, 0 ; 	.long 0x44442810
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x44444454
+.balign 2, 0 ; ob0ba:	.long 0x28000000
+.balign 2, 0 ; 	.long 0x00442810
+.balign 2, 0 ; 	.long 0x28440000
+.balign 2, 0 ; 	.long 0x00004444
+.balign 2, 0 ; 	.long 0x44443c04
+.balign 2, 0 ; 	.long 0x3800007c
+.balign 2, 0 ; 	.long 0x0810207c
+.balign 2, 0 ; 	.long 0x00000810
+.balign 2, 0 ; 	.long 0x10201010
+.balign 2, 0 ; 	.long 0x08000010
+.balign 2, 0 ; 	.long 0x10101010
+.balign 2, 0 ; 	.long 0x10100000
+.balign 2, 0 ; ob0ea:	.long 0x20101008
+.balign 2, 0 ; 	.long 0x10102000
+.balign 2, 0 ; 	.long 0x00142800
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x00003844
+.balign 2, 0 ; 	.long 0x5c645c44
+.balign 2, 0 ; 	.long 0x38000000
+.balign 2, 0 ; l0b106:	.long 0x7f405428
+.equ xl0b106, l0b106
+.balign 2, 0 ; 	.long 0x54285428
+.balign 2, 0 ; 	.long 0x54285444
+.balign 2, 0 ; 	.long 0x00344c44
+.balign 2, 0 ; 	.long 0x4c340000
+.balign 2, 0 ; 	.long 0x1428003c
+.balign 2, 0 ; ob11e:	.long 0x444c3400
+.balign 2, 0 ; 	.long 0x00102810
+.balign 2, 0 ; 	.long 0x3c444c34
+.balign 2, 0 ; 	.long 0x00000810
+.balign 2, 0 ; 	.long 0x38447c40
+.balign 2, 0 ; 	.long 0x3c000044
+.balign 2, 0 ; 	.long 0x00384444
+.balign 2, 0 ; 	.long 0x44380000
+.balign 2, 0 ; 	.long 0x14280038
+.balign 2, 0 ; 	.long 0x44443800
+.balign 2, 0 ; 	.long 0x0000003c
+.balign 2, 0 ; 	.long 0x4c546478
+.balign 2, 0 ; 	.long 0x00004400
+.balign 2, 0 ; 	.long 0x00444444
+.balign 2, 0 ; 	.long 0x3c000000
+.balign 2, 0 ; ob15a:	.long 0x003c4040
+.balign 2, 0 ; 	.long 0x403c1020
+.balign 2, 0 ; 	.long 0x14280078
+.balign 2, 0 ; 	.long 0x44444400
+.balign 2, 0 ; 	.long 0x0000003c
+.balign 2, 0 ; 	.long 0x143c503c
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x2c505c50
+.balign 2, 0 ; 	.long 0x2c000008
+.balign 2, 0 ; 	.long 0x10344c44
+.balign 2, 0 ; 	.long 0x4c340000
+.balign 2, 0 ; 	.long 0x2010344c
+.balign 2, 0 ; 	.long 0x444c3400
+.balign 2, 0 ; ob18e:	.long 0x00102800
+.balign 2, 0 ; 	.long 0x3c444c34
+.balign 2, 0 ; 	.long 0x00004400
+.balign 2, 0 ; 	.long 0x38447c40
+.balign 2, 0 ; 	.long 0x3c000020
+.balign 2, 0 ; 	.long 0x1038447c
+.balign 2, 0 ; 	.long 0x403c0000
+.balign 2, 0 ; 	.long 0x10283844
+.balign 2, 0 ; 	.long 0x7c403c00
+.balign 2, 0 ; 	.long 0x00440000
+.balign 2, 0 ; 	.long 0x10101008
+.balign 2, 0 ; 	.long 0x00000810
+.balign 2, 0 ; ob1be:	.long 0x00101010
+.balign 2, 0 ; 	.long 0x08000020
+.balign 2, 0 ; ob1c6:	.long 0x10001010
+.balign 2, 0 ; 	.long 0x10080000
+.balign 2, 0 ; 	.long 0x10280010
+.balign 2, 0 ; 	.long 0x10100800
+.balign 2, 0 ; 	.long 0x00081038
+.balign 2, 0 ; 	.long 0x44444438
+.balign 2, 0 ; 	.long 0x00002010
+.balign 2, 0 ; 	.long 0x38444444
+.balign 2, 0 ; 	.long 0x38000010
+.balign 2, 0 ; 	.long 0x28003844
+.balign 2, 0 ; 	.long 0x44380000
+.balign 2, 0 ; 	.long 0x08104444
+.balign 2, 0 ; 	.long 0x44443c00
+.balign 2, 0 ; ob1fa:	.long 0x00201044
+.balign 2, 0 ; 	.long 0x4444443c
+.balign 2, 0 ; 	.long 0x00001028
+.balign 2, 0 ; 	.long 0x00444444
+.balign 2, 0 ; 	.long 0x3c000038
+.balign 2, 0 ; 	.long 0x44445844
+.balign 2, 0 ; 	.long 0x44584040
+.balign 2, 0 ; 	.long 0x00083c48
+.balign 2, 0 ; 	.long 0x48483c08
+.balign 2, 0 ; 	.long 0x00444428
+.balign 2, 0 ; 	.long 0x107c1038
+.balign 2, 0 ; 	.long 0x00002010
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x00000044
+.balign 2, 0 ; 	.long 0x1028447c
+.balign 2, 0 ; 	.long 0x44440000
+.balign 2, 0 ; 	.long 0x14281028
+.balign 2, 0 ; 	.long 0x447c4400
+.balign 2, 0 ; ob242:	.long 0x00102810
+.balign 2, 0 ; 	.long 0x28447c44
+.balign 2, 0 ; 	.long 0x00000810
+.balign 2, 0 ; 	.long 0x7c407c40
+.balign 2, 0 ; 	.long 0x7c000044
+.balign 2, 0 ; 	.long 0x38444444
+.balign 2, 0 ; 	.long 0x44380000
+.balign 2, 0 ; 	.long 0x14283844
+.balign 2, 0 ; 	.long 0x44443800
+.balign 2, 0 ; 	.long 0x0034444c
+.balign 2, 0 ; 	.long 0x54644458
+.balign 2, 0 ; 	.long 0x00004400
+.balign 2, 0 ; 	.long 0x44444444
+.balign 2, 0 ; 	.long 0x38000038
+.balign 2, 0 ; 	.long 0x44404044
+.balign 2, 0 ; 	.long 0x38102000
+.balign 2, 0 ; 	.long 0x38004464
+.balign 2, 0 ; 	.long 0x544c4400
+.balign 2, 0 ; 	.long 0x003c4848
+.balign 2, 0 ; 	.long 0x7c48484c
+.balign 2, 0 ; 	.long 0x00003c48
+.balign 2, 0 ; ob296:	.long 0x484c4848
+.balign 2, 0 ; 	.long 0x3c000000
+.balign 2, 0 ; 	.long 0x00245848
+.balign 2, 0 ; 	.long 0x58240000
+.balign 2, 0 ; 	.long 0x38444038
+.balign 2, 0 ; 	.long 0x44443800
+.balign 2, 0 ; 	.long 0x00384444
+.balign 2, 0 ; 	.long 0x7c444438
+.balign 2, 0 ; 	.long 0x00004020
+.balign 2, 0 ; 	.long 0x20101828
+.balign 2, 0 ; 	.long 0x44000000
+.balign 2, 0 ; 	.long 0x00444444
+.balign 2, 0 ; 	.long 0x645c4040
+.balign 2, 0 ; 	.long 0x00003c68
+.balign 2, 0 ; ob2ce:	.long 0x28282800
+.balign 2, 0 ; 	.long 0x00101038
+.balign 2, 0 ; 	.long 0x54545438
+.balign 2, 0 ; 	.long 0x10101000
+.balign 2, 0 ; 	.long 0x10101010
+.balign 2, 0 ; 	.long 0x10000010
+.balign 2, 0 ; 	.long 0x00102040
+.balign 2, 0 ; 	.long 0x44380000
+.balign 2, 0 ; 	.long 0x38440438
+.balign 2, 0 ; 	.long 0x40443800
+.balign 2, 0 ; 	.long 0x10384440
+.balign 2, 0 ; 	.long 0x38443804
+.balign 2, 0 ; 	.long 0x44380044
+.balign 2, 0 ; 	.long 0x38444438
+.balign 2, 0 ; 	.long 0x44000000
+.balign 2, 0 ; 	.long 0x14285028
+.balign 2, 0 ; 	.long 0x14000000
+.balign 2, 0 ; 	.long 0x00502814
+.balign 2, 0 ; 	.long 0x28500000
+.balign 2, 0 ; ob31a:	.long 0x00102810
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x00000010
+.balign 2, 0 ; 	.long 0x007c0010
+.balign 2, 0 ; 	.long 0x00000000
+.balign 2, 0 ; 	.long 0x0010307c
+.balign 2, 0 ; 	.long 0x30100000
+.balign 2, 0 ; 	.long 0x00001018
+.balign 2, 0 ; 	.long 0x7c181000
+.balign 2, 0 ; 	.long 0x00001038
+.balign 2, 0 ; 	.long 0x7c101010
+.balign 2, 0 ; 	.long 0x10000010
+.balign 2, 0 ; 	.long 0x1010107c
+.balign 2, 0 ; 	.long 0x38100000
+
+|**** end of charfount_asm

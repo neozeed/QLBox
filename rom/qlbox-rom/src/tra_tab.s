@@ -1,0 +1,72 @@
+|******************
+|*
+|* TRA_TAB as delivered in MGG-ROM
+|*
+|******************
+
+.balign 2, 0 ; l0b614:	.long 0x4afb0006
+.balign 2, 0 ; 	.long 0x01060001
+.balign 2, 0 ; 	.long 0x02030405
+.balign 2, 0 ; 	.long 0x06070809
+.balign 2, 0 ; 	.long 0x0a0b0c0d
+.balign 2, 0 ; 	.long 0x0e0f1011
+.balign 2, 0 ; 	.long 0x12131415
+.balign 2, 0 ; 	.long 0x16171819
+.balign 2, 0 ; 	.long 0x1a1b1c1d
+.balign 2, 0 ; 	.long 0x1e1f2021
+.balign 2, 0 ; 	.long 0x22232425
+.balign 2, 0 ; 	.long 0x26272829
+.balign 2, 0 ; 	.long 0x2a2b2c2d
+.balign 2, 0 ; 	.long 0x2e2f3031
+.balign 2, 0 ; 	.long 0x32333435
+.balign 2, 0 ; 	.long 0x36373839
+.balign 2, 0 ; 	.long 0x3a3b3c3d
+.balign 2, 0 ; 	.long 0x3e3f3f41
+.balign 2, 0 ; 	.long 0x42434445
+.balign 2, 0 ; 	.long 0x46474849
+.balign 2, 0 ; 	.long 0x4a4b4c4d
+.balign 2, 0 ; 	.long 0x4e4f5051
+.balign 2, 0 ; 	.long 0x52535455
+.balign 2, 0 ; 	.long 0x56575859
+.balign 2, 0 ; 	.long 0x5a3f3f3f
+.balign 2, 0 ; 	.long 0x5e5f3f61
+.balign 2, 0 ; 	.long 0x62636465
+.balign 2, 0 ; 	.long 0x66676869
+.balign 2, 0 ; 	.long 0x6a6b6c6d
+.balign 2, 0 ; 	.long 0x6e6f7071
+.balign 2, 0 ; 	.long 0x72737475
+.balign 2, 0 ; 	.long 0x76777879
+.balign 2, 0 ; 	.long 0x7a3f3f3f
+.balign 2, 0 ; 	.long 0x3f3f7b81
+.balign 2, 0 ; 	.long 0x82837c85
+.balign 2, 0 ; 	.long 0x867d8889
+.balign 2, 0 ; 	.long 0x8a8b8c8d
+.balign 2, 0 ; 	.long 0x8e8f9091
+.balign 2, 0 ; 	.long 0x92939495
+.balign 2, 0 ; 	.long 0x96979899
+.balign 2, 0 ; 	.long 0x9a9b7e9d
+.balign 2, 0 ; 	.long 0x9e605ba1
+.balign 2, 0 ; 	.long 0xa2a35ca5
+.balign 2, 0 ; 	.long 0xa65da8a9
+.balign 2, 0 ; 	.long 0xaaabacad
+.balign 2, 0 ; 	.long 0xaeafb0b1
+.balign 2, 0 ; 	.long 0xb2b3b4b5
+.balign 2, 0 ; 	.long 0x40b7b8b9
+.balign 2, 0 ; 	.long 0xbabbbcbd
+.balign 2, 0 ; 	.long 0xbebfc0c1
+.balign 2, 0 ; 	.long 0xc2c3c4c5
+.balign 2, 0 ; 	.long 0xc6c7c8c9
+.balign 2, 0 ; 	.long 0xcacbcccd
+.balign 2, 0 ; 	.long 0xcecfd0d1
+.balign 2, 0 ; 	.long 0xd2d3d4d5
+.balign 2, 0 ; 	.long 0xd6d7d8d9
+.balign 2, 0 ; 	.long 0xdadbdcdd
+.balign 2, 0 ; 	.long 0xdedfe0e1
+.balign 2, 0 ; 	.long 0xe2e3e4e5
+.balign 2, 0 ; 	.long 0xe6e7e8e9
+.balign 2, 0 ; 	.long 0xeaebeced
+.balign 2, 0 ; 	.long 0xeeeff0f1
+.balign 2, 0 ; 	.long 0xf2f3f4f5
+.balign 2, 0 ; 	.long 0xf6f7f8f9
+.balign 2, 0 ; 	.long 0xfafbfcfd
+.balign 2, 0 ; 	.long 0xfeff00ff
